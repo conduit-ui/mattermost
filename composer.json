@@ -1,0 +1,53 @@
+{
+    "name": "conduit-ui/mattermost",
+    "description": "The Laravel way to build Mattermost bots — Saloon client, WebSocket, bot framework, streaming replies, slash commands, Filament panel",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["laravel", "mattermost", "bot", "websocket", "chat", "saloon"],
+    "authors": [
+        {
+            "name": "Jordan Partridge",
+            "email": "jordan@jordanpartridge.us"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "illuminate/contracts": "^13.0",
+        "illuminate/support": "^13.0",
+        "saloonphp/saloon": "^4.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.0",
+        "laravel/framework": "^13.0",
+        "laravel/pint": "^1.0",
+        "orchestra/testbench": "^11.0",
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-laravel": "^4.0",
+        "rector/rector": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ConduitUI\\Mattermost\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ConduitUI\\Mattermost\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ConduitUI\\Mattermost\\MattermostServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

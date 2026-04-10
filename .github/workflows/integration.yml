@@ -1,0 +1,54 @@
+name: Integration Tests
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * 1' # Weekly Monday 6am UTC
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+
+    services:
+      mattermost:
+        image: mattermost/mattermost-enterprise-edition:latest
+        ports:
+          - 8065:8065
+        env:
+          MM_SQLSETTINGS_DRIVERNAME: postgres
+          MM_SQLSETTINGS_DATASOURCE: postgres://mmuser:mmpass@postgres:5432/mattermost?sslmode=disable
+          MM_SERVICESETTINGS_ENABLEBOTACCOUNTCREATION: 'true'
+          MM_SERVICESETTINGS_ENABLEUSERACCESSTOKENS: 'true'
+      postgres:
+        image: postgres:16
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: mmuser
+          POSTGRES_PASSWORD: mmpass
+          POSTGRES_DB: mattermost
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Wait for Mattermost
+        run: |
+          for i in {1..30}; do
+            curl -sf http://localhost:8065/api/v4/system/ping && break
+            echo "Waiting for Mattermost... ($i)"
+            sleep 2
+          done
+
+      - name: Run integration tests
+        run: vendor/bin/pest --testsuite=Integration
+        env:
+          MATTERMOST_URL: http://localhost:8065
