@@ -4,3 +4,5 @@
 .phpunit.result.cache
 .phpunit.cache/
 composer.lock
+spec/mattermost-openapi-v4.yaml
+spec/mattermost-openapi-core.yaml

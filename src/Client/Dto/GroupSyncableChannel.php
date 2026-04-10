@@ -1,0 +1,25 @@
+<?php
+
+namespace ConduitUI\Mattermost\Client\Dto;
+
+use Spatie\LaravelData\Attributes\MapName;
+use Spatie\LaravelData\Data as SpatieData;
+
+class GroupSyncableChannel extends SpatieData
+{
+	public function __construct(
+		#[MapName('auto_add')]
+		public ?bool $autoAdd = null,
+		#[MapName('channel_id')]
+		public ?string $channelId = null,
+		#[MapName('create_at')]
+		public ?int $createAt = null,
+		#[MapName('delete_at')]
+		public ?int $deleteAt = null,
+		#[MapName('group_id')]
+		public ?string $groupId = null,
+		#[MapName('update_at')]
+		public ?int $updateAt = null,
+	) {
+	}
+}

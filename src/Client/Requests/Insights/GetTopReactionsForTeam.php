@@ -1,0 +1,48 @@
+<?php
+
+namespace ConduitUI\Mattermost\Client\Requests\Insights;
+
+use DateTime;
+use Saloon\Enums\Method;
+use Saloon\Http\Request;
+
+/**
+ * GetTopReactionsForTeam
+ *
+ * Get a list of the top reactions across all public and private channels (the user is a member of) for
+ * a given team.
+ * ##### Permissions
+ * Must have `view_team` permission for the team.
+ */
+class GetTopReactionsForTeam extends Request
+{
+	protected Method $method = Method::GET;
+
+
+	public function resolveEndpoint(): string
+	{
+		return "/api/v4/teams/{$this->teamId}/top/reactions";
+	}
+
+
+	/**
+	 * @param string $teamId Team GUID
+	 * @param string $timeRange Time range can be "today", "7_day", or "28_day".
+	 * - `today`: reactions posted on the current day.
+	 * - `7_day`: reactions posted in the last 7 days.
+	 * - `28_day`: reactions posted in the last 28 days.
+	 * @param null|int $page The page to select.
+	 */
+	public function __construct(
+		protected string $teamId,
+		protected string $timeRange,
+		protected ?int $page = null,
+	) {
+	}
+
+
+	public function defaultQuery(): array
+	{
+		return array_filter(['time_range' => $this->timeRange, 'page' => $this->page]);
+	}
+}

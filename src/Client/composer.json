@@ -1,0 +1,35 @@
+{
+    "name": "conduit-ui/mattermost",
+    "description": "Mattermost API Reference SDK",
+    "type": "library",
+    "require": {
+        "php": "^8.2",
+        "saloonphp/saloon": "^3.0|^4.0",
+        "spatie/laravel-data": "^3.0|^4.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.0|^3.0",
+        "orchestra/testbench": "^8.0|^9.0|^10.0",
+        "saloonphp/laravel-plugin": "^3.0|^4.0",
+        "spatie/laravel-data": "^3.0|^4.0",
+        "vlucas/phpdotenv": "^5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "ConduitUI\\Mattermost\\Client\\": "src/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ConduitUI\\Mattermost\\Client\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}

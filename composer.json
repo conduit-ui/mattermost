@@ -17,6 +17,7 @@
         "saloonphp/saloon": "^4.0"
     },
     "require-dev": {
+        "crescat-io/saloon-sdk-generator": "^1.6",
         "larastan/larastan": "^3.0",
         "laravel/framework": "^13.0",
         "laravel/pint": "^1.0",
