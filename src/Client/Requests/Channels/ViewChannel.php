@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Channels;
 
-use DateTime;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -22,22 +23,19 @@ use Saloon\Traits\Body\HasJsonBody;
  */
 class ViewChannel extends Request implements HasBody
 {
-	use HasJsonBody;
+    use HasJsonBody;
 
-	protected Method $method = Method::POST;
+    protected Method $method = Method::POST;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/channels/members/{$this->userId}/view";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/channels/members/{$this->userId}/view";
-	}
-
-
-	/**
-	 * @param string $userId User ID to perform the view action for
-	 */
-	public function __construct(
-		protected string $userId,
-	) {
-	}
+    /**
+     * @param  string  $userId  User ID to perform the view action for
+     */
+    public function __construct(
+        protected string $userId,
+    ) {}
 }

@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Threads;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -19,22 +20,19 @@ use Saloon\Http\Request;
  */
 class GetThreadMentionCountsByChannel extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/users/{$this->userId}/teams/{$this->teamId}/threads/mention_counts";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/{$this->userId}/teams/{$this->teamId}/threads/mention_counts";
-	}
-
-
-	/**
-	 * @param string $userId The ID of the user. This can also be "me" which will point to the current user.
-	 * @param string $teamId The ID of the team in which the thread is.
-	 */
-	public function __construct(
-		protected string $userId,
-		protected string $teamId,
-	) {
-	}
+    /**
+     * @param  string  $userId  The ID of the user. This can also be "me" which will point to the current user.
+     * @param  string  $teamId  The ID of the team in which the thread is.
+     */
+    public function __construct(
+        protected string $userId,
+        protected string $teamId,
+    ) {}
 }

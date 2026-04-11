@@ -12,6 +12,8 @@ class MattermostServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/mattermost.php', 'mattermost');
+
+        $this->app->scoped(MattermostManager::class);
     }
 
     public function boot(): void

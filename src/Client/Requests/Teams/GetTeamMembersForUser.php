@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Teams;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -17,20 +18,17 @@ use Saloon\Http\Request;
  */
 class GetTeamMembersForUser extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/users/{$this->userId}/teams/members";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/{$this->userId}/teams/members";
-	}
-
-
-	/**
-	 * @param string $userId User GUID
-	 */
-	public function __construct(
-		protected string $userId,
-	) {
-	}
+    /**
+     * @param  string  $userId  User GUID
+     */
+    public function __construct(
+        protected string $userId,
+    ) {}
 }

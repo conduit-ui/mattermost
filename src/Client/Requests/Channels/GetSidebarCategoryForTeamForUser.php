@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Channels;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -17,24 +18,21 @@ use Saloon\Http\Request;
  */
 class GetSidebarCategoryForTeamForUser extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/users/{$this->userId}/teams/{$this->teamId}/channels/categories/{$this->categoryId}";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/{$this->userId}/teams/{$this->teamId}/channels/categories/{$this->categoryId}";
-	}
-
-
-	/**
-	 * @param string $teamId Team GUID
-	 * @param string $userId User GUID
-	 * @param string $categoryId Category GUID
-	 */
-	public function __construct(
-		protected string $teamId,
-		protected string $userId,
-		protected string $categoryId,
-	) {
-	}
+    /**
+     * @param  string  $teamId  Team GUID
+     * @param  string  $userId  User GUID
+     * @param  string  $categoryId  Category GUID
+     */
+    public function __construct(
+        protected string $teamId,
+        protected string $userId,
+        protected string $categoryId,
+    ) {}
 }

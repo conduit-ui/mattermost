@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Users;
 
-use DateTime;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -25,22 +26,19 @@ use Saloon\Traits\Body\HasJsonBody;
  */
 class PromoteGuestToUser extends Request implements HasBody
 {
-	use HasJsonBody;
+    use HasJsonBody;
 
-	protected Method $method = Method::POST;
+    protected Method $method = Method::POST;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/users/{$this->userId}/promote";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/{$this->userId}/promote";
-	}
-
-
-	/**
-	 * @param string $userId User GUID
-	 */
-	public function __construct(
-		protected string $userId,
-	) {
-	}
+    /**
+     * @param  string  $userId  User GUID
+     */
+    public function __construct(
+        protected string $userId,
+    ) {}
 }

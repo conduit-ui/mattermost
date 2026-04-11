@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Emoji;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -18,20 +19,17 @@ use Saloon\Http\Request;
  */
 class GetEmojiByName extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/emoji/name/{$this->emojiName}";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/emoji/name/{$this->emojiName}";
-	}
-
-
-	/**
-	 * @param string $emojiName Emoji name
-	 */
-	public function __construct(
-		protected string $emojiName,
-	) {
-	}
+    /**
+     * @param  string  $emojiName  Emoji name
+     */
+    public function __construct(
+        protected string $emojiName,
+    ) {}
 }

@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Teams;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -16,22 +17,19 @@ use Saloon\Http\Request;
  */
 class RemoveTeamMember extends Request
 {
-	protected Method $method = Method::DELETE;
+    protected Method $method = Method::DELETE;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/teams/{$this->teamId}/members/{$this->userId}";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/teams/{$this->teamId}/members/{$this->userId}";
-	}
-
-
-	/**
-	 * @param string $teamId Team GUID
-	 * @param string $userId User GUID
-	 */
-	public function __construct(
-		protected string $teamId,
-		protected string $userId,
-	) {
-	}
+    /**
+     * @param  string  $teamId  Team GUID
+     * @param  string  $userId  User GUID
+     */
+    public function __construct(
+        protected string $teamId,
+        protected string $userId,
+    ) {}
 }

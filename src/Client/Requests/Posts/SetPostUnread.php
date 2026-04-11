@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Posts;
 
-use DateTime;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -23,24 +24,21 @@ use Saloon\Traits\Body\HasJsonBody;
  */
 class SetPostUnread extends Request implements HasBody
 {
-	use HasJsonBody;
+    use HasJsonBody;
 
-	protected Method $method = Method::POST;
+    protected Method $method = Method::POST;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/users/{$this->userId}/posts/{$this->postId}/set_unread";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/{$this->userId}/posts/{$this->postId}/set_unread";
-	}
-
-
-	/**
-	 * @param string $userId User GUID
-	 * @param string $postId Post GUID
-	 */
-	public function __construct(
-		protected string $userId,
-		protected string $postId,
-	) {
-	}
+    /**
+     * @param  string  $userId  User GUID
+     * @param  string  $postId  Post GUID
+     */
+    public function __construct(
+        protected string $userId,
+        protected string $postId,
+    ) {}
 }

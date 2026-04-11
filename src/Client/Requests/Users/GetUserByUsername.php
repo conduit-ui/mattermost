@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Users;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -16,20 +17,17 @@ use Saloon\Http\Request;
  */
 class GetUserByUsername extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/users/username/{$this->username}";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/username/{$this->username}";
-	}
-
-
-	/**
-	 * @param string $username Username
-	 */
-	public function __construct(
-		protected string $username,
-	) {
-	}
+    /**
+     * @param  string  $username  Username
+     */
+    public function __construct(
+        protected string $username,
+    ) {}
 }

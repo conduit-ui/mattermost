@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\System;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -17,32 +18,28 @@ use Saloon\Http\Request;
  */
 class GetNotices extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/system/notices/{$this->teamId}";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/system/notices/{$this->teamId}";
-	}
+    /**
+     * @param  string  $teamId  ID of the team
+     * @param  string  $clientVersion  Version of the client (desktop/mobile/web) that issues the request
+     * @param  null|string  $locale  Client locale
+     * @param  string  $client  Client type (web/mobile-ios/mobile-android/desktop)
+     */
+    public function __construct(
+        protected string $teamId,
+        protected string $clientVersion,
+        protected ?string $locale,
+        protected string $client,
+    ) {}
 
-
-	/**
-	 * @param string $teamId ID of the team
-	 * @param string $clientVersion Version of the client (desktop/mobile/web) that issues the request
-	 * @param null|string $locale Client locale
-	 * @param string $client Client type (web/mobile-ios/mobile-android/desktop)
-	 */
-	public function __construct(
-		protected string $teamId,
-		protected string $clientVersion,
-		protected ?string $locale = null,
-		protected string $client,
-	) {
-	}
-
-
-	public function defaultQuery(): array
-	{
-		return array_filter(['clientVersion' => $this->clientVersion, 'locale' => $this->locale, 'client' => $this->client]);
-	}
+    public function defaultQuery(): array
+    {
+        return array_filter(['clientVersion' => $this->clientVersion, 'locale' => $this->locale, 'client' => $this->client]);
+    }
 }

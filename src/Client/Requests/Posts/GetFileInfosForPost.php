@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Posts;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -16,28 +17,24 @@ use Saloon\Http\Request;
  */
 class GetFileInfosForPost extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/posts/{$this->postId}/files/info";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/posts/{$this->postId}/files/info";
-	}
+    /**
+     * @param  string  $postId  ID of the post
+     * @param  null|bool  $includeDeleted  Defines if result should include deleted posts, must have 'manage_system' (admin) permission.
+     */
+    public function __construct(
+        protected string $postId,
+        protected ?bool $includeDeleted = null,
+    ) {}
 
-
-	/**
-	 * @param string $postId ID of the post
-	 * @param null|bool $includeDeleted Defines if result should include deleted posts, must have 'manage_system' (admin) permission.
-	 */
-	public function __construct(
-		protected string $postId,
-		protected ?bool $includeDeleted = null,
-	) {
-	}
-
-
-	public function defaultQuery(): array
-	{
-		return array_filter(['include_deleted' => $this->includeDeleted]);
-	}
+    public function defaultQuery(): array
+    {
+        return array_filter(['include_deleted' => $this->includeDeleted]);
+    }
 }

@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\DataRetention;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -23,28 +24,24 @@ use Saloon\Http\Request;
  */
 class GetTeamPoliciesForUser extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/users/{$this->userId}/data_retention/team_policies";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/{$this->userId}/data_retention/team_policies";
-	}
+    /**
+     * @param  string  $userId  The ID of the user. This can also be "me" which will point to the current user.
+     * @param  null|int  $page  The page to select.
+     */
+    public function __construct(
+        protected string $userId,
+        protected ?int $page = null,
+    ) {}
 
-
-	/**
-	 * @param string $userId The ID of the user. This can also be "me" which will point to the current user.
-	 * @param null|int $page The page to select.
-	 */
-	public function __construct(
-		protected string $userId,
-		protected ?int $page = null,
-	) {
-	}
-
-
-	public function defaultQuery(): array
-	{
-		return array_filter(['page' => $this->page]);
-	}
+    public function defaultQuery(): array
+    {
+        return array_filter(['page' => $this->page]);
+    }
 }

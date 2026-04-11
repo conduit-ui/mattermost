@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Status;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -17,20 +18,17 @@ use Saloon\Http\Request;
  */
 class UpdateUserCustomStatus extends Request
 {
-	protected Method $method = Method::PUT;
+    protected Method $method = Method::PUT;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/users/{$this->userId}/status/custom";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/{$this->userId}/status/custom";
-	}
-
-
-	/**
-	 * @param string $userId User ID
-	 */
-	public function __construct(
-		protected string $userId,
-	) {
-	}
+    /**
+     * @param  string  $userId  User ID
+     */
+    public function __construct(
+        protected string $userId,
+    ) {}
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Resource;
 
 use ConduitUI\Mattermost\Client\Requests\Emoji\AutocompleteEmoji;
@@ -15,69 +17,62 @@ use Saloon\Http\Response;
 
 class Emoji extends BaseResource
 {
-	/**
-	 * @param int $page The page to select.
-	 * @param string $sort Either blank for no sorting or "name" to sort by emoji names. Minimum server version for sorting is 4.7.
-	 */
-	public function getEmojiList(?int $page = null, ?string $sort = null): Response
-	{
-		return $this->connector->send(new GetEmojiList($page, $sort));
-	}
+    /**
+     * @param  int  $page  The page to select.
+     * @param  string  $sort  Either blank for no sorting or "name" to sort by emoji names. Minimum server version for sorting is 4.7.
+     */
+    public function getEmojiList(?int $page = null, ?string $sort = null): Response
+    {
+        return $this->connector->send(new GetEmojiList($page, $sort));
+    }
 
+    public function createEmoji(): Response
+    {
+        return $this->connector->send(new CreateEmoji);
+    }
 
-	public function createEmoji(): Response
-	{
-		return $this->connector->send(new CreateEmoji());
-	}
+    /**
+     * @param  string  $name  The emoji name to search.
+     */
+    public function autocompleteEmoji(string $name): Response
+    {
+        return $this->connector->send(new AutocompleteEmoji($name));
+    }
 
+    /**
+     * @param  string  $emojiName  Emoji name
+     */
+    public function getEmojiByName(string $emojiName): Response
+    {
+        return $this->connector->send(new GetEmojiByName($emojiName));
+    }
 
-	/**
-	 * @param string $name The emoji name to search.
-	 */
-	public function autocompleteEmoji(string $name): Response
-	{
-		return $this->connector->send(new AutocompleteEmoji($name));
-	}
+    public function searchEmoji(): Response
+    {
+        return $this->connector->send(new SearchEmoji);
+    }
 
+    /**
+     * @param  string  $emojiId  Emoji GUID
+     */
+    public function getEmoji(string $emojiId): Response
+    {
+        return $this->connector->send(new GetEmoji($emojiId));
+    }
 
-	/**
-	 * @param string $emojiName Emoji name
-	 */
-	public function getEmojiByName(string $emojiName): Response
-	{
-		return $this->connector->send(new GetEmojiByName($emojiName));
-	}
+    /**
+     * @param  string  $emojiId  Emoji GUID
+     */
+    public function deleteEmoji(string $emojiId): Response
+    {
+        return $this->connector->send(new DeleteEmoji($emojiId));
+    }
 
-
-	public function searchEmoji(): Response
-	{
-		return $this->connector->send(new SearchEmoji());
-	}
-
-
-	/**
-	 * @param string $emojiId Emoji GUID
-	 */
-	public function getEmoji(string $emojiId): Response
-	{
-		return $this->connector->send(new GetEmoji($emojiId));
-	}
-
-
-	/**
-	 * @param string $emojiId Emoji GUID
-	 */
-	public function deleteEmoji(string $emojiId): Response
-	{
-		return $this->connector->send(new DeleteEmoji($emojiId));
-	}
-
-
-	/**
-	 * @param string $emojiId Emoji GUID
-	 */
-	public function getEmojiImage(string $emojiId): Response
-	{
-		return $this->connector->send(new GetEmojiImage($emojiId));
-	}
+    /**
+     * @param  string  $emojiId  Emoji GUID
+     */
+    public function getEmojiImage(string $emojiId): Response
+    {
+        return $this->connector->send(new GetEmojiImage($emojiId));
+    }
 }

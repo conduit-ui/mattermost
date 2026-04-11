@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Bots;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -19,20 +20,17 @@ use Saloon\Http\Request;
  */
 class PatchBot extends Request
 {
-	protected Method $method = Method::PUT;
+    protected Method $method = Method::PUT;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/bots/{$this->botUserId}";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/bots/{$this->botUserId}";
-	}
-
-
-	/**
-	 * @param string $botUserId Bot user ID
-	 */
-	public function __construct(
-		protected string $botUserId,
-	) {
-	}
+    /**
+     * @param  string  $botUserId  Bot user ID
+     */
+    public function __construct(
+        protected string $botUserId,
+    ) {}
 }

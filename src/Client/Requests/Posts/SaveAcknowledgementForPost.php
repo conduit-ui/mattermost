@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Posts;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -20,22 +21,19 @@ use Saloon\Http\Request;
  */
 class SaveAcknowledgementForPost extends Request
 {
-	protected Method $method = Method::DELETE;
+    protected Method $method = Method::DELETE;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/users/{$this->userId}/posts/{$this->postId}/ack";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/{$this->userId}/posts/{$this->postId}/ack";
-	}
-
-
-	/**
-	 * @param string $userId User GUID
-	 * @param string $postId Post GUID
-	 */
-	public function __construct(
-		protected string $userId,
-		protected string $postId,
-	) {
-	}
+    /**
+     * @param  string  $userId  User GUID
+     * @param  string  $postId  Post GUID
+     */
+    public function __construct(
+        protected string $userId,
+        protected string $postId,
+    ) {}
 }

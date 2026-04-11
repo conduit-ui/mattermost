@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Channels;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -16,22 +17,19 @@ use Saloon\Http\Request;
  */
 class GetChannelUnread extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/users/{$this->userId}/channels/{$this->channelId}/unread";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/{$this->userId}/channels/{$this->channelId}/unread";
-	}
-
-
-	/**
-	 * @param string $userId User GUID
-	 * @param string $channelId Channel GUID
-	 */
-	public function __construct(
-		protected string $userId,
-		protected string $channelId,
-	) {
-	}
+    /**
+     * @param  string  $userId  User GUID
+     * @param  string  $channelId  Channel GUID
+     */
+    public function __construct(
+        protected string $userId,
+        protected string $channelId,
+    ) {}
 }

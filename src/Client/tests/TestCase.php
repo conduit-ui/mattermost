@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client;
 
 use Dotenv\Dotenv;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Saloon\Laravel\SaloonServiceProvider;
 use Spatie\LaravelData\LaravelDataServiceProvider;
-use ConduitUI\Mattermost\Client\MattermostServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -19,7 +20,7 @@ class TestCase extends Orchestra
         ];
     }
 
-    public function getEnvironmentSetUp($app)
+    public function getEnvironmentSetUp($app): void
     {
         // Load .env.test into the environment.
         if (file_exists(dirname(__DIR__).'/.env')) {

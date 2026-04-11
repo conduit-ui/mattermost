@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Users;
 
-use DateTime;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -20,18 +21,14 @@ use Saloon\Traits\Body\HasJsonBody;
  */
 class SearchUsers extends Request implements HasBody
 {
-	use HasJsonBody;
+    use HasJsonBody;
 
-	protected Method $method = Method::POST;
+    protected Method $method = Method::POST;
 
+    public function resolveEndpoint(): string
+    {
+        return '/api/v4/users/search';
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/search";
-	}
-
-
-	public function __construct()
-	{
-	}
+    public function __construct() {}
 }

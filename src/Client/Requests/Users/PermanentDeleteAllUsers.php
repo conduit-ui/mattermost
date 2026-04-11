@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Users;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -19,16 +20,12 @@ use Saloon\Http\Request;
  */
 class PermanentDeleteAllUsers extends Request
 {
-	protected Method $method = Method::DELETE;
+    protected Method $method = Method::DELETE;
 
+    public function resolveEndpoint(): string
+    {
+        return '/api/v4/users';
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users";
-	}
-
-
-	public function __construct()
-	{
-	}
+    public function __construct() {}
 }

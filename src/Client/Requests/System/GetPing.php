@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\System;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -29,28 +30,24 @@ use Saloon\Http\Request;
  */
 class GetPing extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return '/api/v4/system/ping';
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/system/ping";
-	}
+    /**
+     * @param  null|bool  $getServerStatus  Check the status of the database and file storage as well
+     * @param  null|string  $deviceId  Check whether this device id can receive push notifications
+     */
+    public function __construct(
+        protected ?bool $getServerStatus = null,
+        protected ?string $deviceId = null,
+    ) {}
 
-
-	/**
-	 * @param null|bool $getServerStatus Check the status of the database and file storage as well
-	 * @param null|string $deviceId Check whether this device id can receive push notifications
-	 */
-	public function __construct(
-		protected ?bool $getServerStatus = null,
-		protected ?string $deviceId = null,
-	) {
-	}
-
-
-	public function defaultQuery(): array
-	{
-		return array_filter(['get_server_status' => $this->getServerStatus, 'device_id' => $this->deviceId]);
-	}
+    public function defaultQuery(): array
+    {
+        return array_filter(['get_server_status' => $this->getServerStatus, 'device_id' => $this->deviceId]);
+    }
 }

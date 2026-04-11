@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Channels;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -20,28 +21,24 @@ use Saloon\Http\Request;
  */
 class AutocompleteChannelsForTeam extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/teams/{$this->teamId}/channels/autocomplete";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/teams/{$this->teamId}/channels/autocomplete";
-	}
+    /**
+     * @param  string  $teamId  Team GUID
+     * @param  string  $name  Name or display name
+     */
+    public function __construct(
+        protected string $teamId,
+        protected string $name,
+    ) {}
 
-
-	/**
-	 * @param string $teamId Team GUID
-	 * @param string $name Name or display name
-	 */
-	public function __construct(
-		protected string $teamId,
-		protected string $name,
-	) {
-	}
-
-
-	public function defaultQuery(): array
-	{
-		return array_filter(['name' => $this->name]);
-	}
+    public function defaultQuery(): array
+    {
+        return array_filter(['name' => $this->name]);
+    }
 }

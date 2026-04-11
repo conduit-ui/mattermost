@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Channels;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -16,20 +17,17 @@ use Saloon\Http\Request;
  */
 class PatchChannelModerations extends Request
 {
-	protected Method $method = Method::PUT;
+    protected Method $method = Method::PUT;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/channels/{$this->channelId}/moderations/patch";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/channels/{$this->channelId}/moderations/patch";
-	}
-
-
-	/**
-	 * @param string $channelId Channel GUID
-	 */
-	public function __construct(
-		protected string $channelId,
-	) {
-	}
+    /**
+     * @param  string  $channelId  Channel GUID
+     */
+    public function __construct(
+        protected string $channelId,
+    ) {}
 }

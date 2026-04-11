@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Emoji;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -16,20 +17,17 @@ use Saloon\Http\Request;
  */
 class DeleteEmoji extends Request
 {
-	protected Method $method = Method::DELETE;
+    protected Method $method = Method::DELETE;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/emoji/{$this->emojiId}";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/emoji/{$this->emojiId}";
-	}
-
-
-	/**
-	 * @param string $emojiId Emoji GUID
-	 */
-	public function __construct(
-		protected string $emojiId,
-	) {
-	}
+    /**
+     * @param  string  $emojiId  Emoji GUID
+     */
+    public function __construct(
+        protected string $emojiId,
+    ) {}
 }

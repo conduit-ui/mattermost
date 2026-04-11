@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Bots;
 
-use DateTime;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -19,22 +20,19 @@ use Saloon\Traits\Body\HasJsonBody;
  */
 class DisableBot extends Request implements HasBody
 {
-	use HasJsonBody;
+    use HasJsonBody;
 
-	protected Method $method = Method::POST;
+    protected Method $method = Method::POST;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/bots/{$this->botUserId}/disable";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/bots/{$this->botUserId}/disable";
-	}
-
-
-	/**
-	 * @param string $botUserId Bot user ID
-	 */
-	public function __construct(
-		protected string $botUserId,
-	) {
-	}
+    /**
+     * @param  string  $botUserId  Bot user ID
+     */
+    public function __construct(
+        protected string $botUserId,
+    ) {}
 }

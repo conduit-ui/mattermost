@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\System;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -15,16 +16,12 @@ use Saloon\Http\Request;
  */
 class GetSupportedTimezone extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return '/api/v4/system/timezones';
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/system/timezones";
-	}
-
-
-	public function __construct()
-	{
-	}
+    public function __construct() {}
 }

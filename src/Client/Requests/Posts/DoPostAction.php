@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Posts;
 
-use DateTime;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -19,24 +20,21 @@ use Saloon\Traits\Body\HasJsonBody;
  */
 class DoPostAction extends Request implements HasBody
 {
-	use HasJsonBody;
+    use HasJsonBody;
 
-	protected Method $method = Method::POST;
+    protected Method $method = Method::POST;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/posts/{$this->postId}/actions/{$this->actionId}";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/posts/{$this->postId}/actions/{$this->actionId}";
-	}
-
-
-	/**
-	 * @param string $postId Post GUID
-	 * @param string $actionId Action GUID
-	 */
-	public function __construct(
-		protected string $postId,
-		protected string $actionId,
-	) {
-	}
+    /**
+     * @param  string  $postId  Post GUID
+     * @param  string  $actionId  Action GUID
+     */
+    public function __construct(
+        protected string $postId,
+        protected string $actionId,
+    ) {}
 }

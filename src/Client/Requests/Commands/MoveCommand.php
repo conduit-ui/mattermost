@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Commands;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -19,20 +20,17 @@ use Saloon\Http\Request;
  */
 class MoveCommand extends Request
 {
-	protected Method $method = Method::PUT;
+    protected Method $method = Method::PUT;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/commands/{$this->commandId}/move";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/commands/{$this->commandId}/move";
-	}
-
-
-	/**
-	 * @param string $commandId ID of the command to move
-	 */
-	public function __construct(
-		protected string $commandId,
-	) {
-	}
+    /**
+     * @param  string  $commandId  ID of the command to move
+     */
+    public function __construct(
+        protected string $commandId,
+    ) {}
 }

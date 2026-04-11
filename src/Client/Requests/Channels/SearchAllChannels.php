@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Channels;
 
-use DateTime;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -26,28 +27,24 @@ use Saloon\Traits\Body\HasJsonBody;
  */
 class SearchAllChannels extends Request implements HasBody
 {
-	use HasJsonBody;
+    use HasJsonBody;
 
-	protected Method $method = Method::POST;
+    protected Method $method = Method::POST;
 
+    public function resolveEndpoint(): string
+    {
+        return '/api/v4/channels/search';
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/channels/search";
-	}
+    /**
+     * @param  null|bool  $systemConsole  Is the request from system_console. If this is set to true, it filters channels by the logged in user.
+     */
+    public function __construct(
+        protected ?bool $systemConsole = null,
+    ) {}
 
-
-	/**
-	 * @param null|bool $systemConsole Is the request from system_console. If this is set to true, it filters channels by the logged in user.
-	 */
-	public function __construct(
-		protected ?bool $systemConsole = null,
-	) {
-	}
-
-
-	public function defaultQuery(): array
-	{
-		return array_filter(['system_console' => $this->systemConsole]);
-	}
+    public function defaultQuery(): array
+    {
+        return array_filter(['system_console' => $this->systemConsole]);
+    }
 }

@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Posts;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -17,32 +18,28 @@ use Saloon\Http\Request;
  */
 class GetFlaggedPostsForUser extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/users/{$this->userId}/posts/flagged";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/{$this->userId}/posts/flagged";
-	}
+    /**
+     * @param  string  $userId  ID of the user
+     * @param  null|string  $teamId  Team ID
+     * @param  null|string  $channelId  Channel ID
+     * @param  null|int  $page  The page to select
+     */
+    public function __construct(
+        protected string $userId,
+        protected ?string $teamId = null,
+        protected ?string $channelId = null,
+        protected ?int $page = null,
+    ) {}
 
-
-	/**
-	 * @param string $userId ID of the user
-	 * @param null|string $teamId Team ID
-	 * @param null|string $channelId Channel ID
-	 * @param null|int $page The page to select
-	 */
-	public function __construct(
-		protected string $userId,
-		protected ?string $teamId = null,
-		protected ?string $channelId = null,
-		protected ?int $page = null,
-	) {
-	}
-
-
-	public function defaultQuery(): array
-	{
-		return array_filter(['team_id' => $this->teamId, 'channel_id' => $this->channelId, 'page' => $this->page]);
-	}
+    public function defaultQuery(): array
+    {
+        return array_filter(['team_id' => $this->teamId, 'channel_id' => $this->channelId, 'page' => $this->page]);
+    }
 }

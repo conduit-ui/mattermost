@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Dto;
 
 use Spatie\LaravelData\Data as SpatieData;
 
 class PostsUsage extends SpatieData
 {
-	public function __construct(
-		public int|float|null $count = null,
-	) {
-	}
+    public function __construct(
+        public int|float|null $count = null,
+    ) {}
 }

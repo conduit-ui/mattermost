@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Oauth;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -16,28 +17,24 @@ use Saloon\Http\Request;
  */
 class GetAuthorizedOauthAppsForUser extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/users/{$this->userId}/oauth/apps/authorized";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/{$this->userId}/oauth/apps/authorized";
-	}
+    /**
+     * @param  string  $userId  User GUID
+     * @param  null|int  $page  The page to select.
+     */
+    public function __construct(
+        protected string $userId,
+        protected ?int $page = null,
+    ) {}
 
-
-	/**
-	 * @param string $userId User GUID
-	 * @param null|int $page The page to select.
-	 */
-	public function __construct(
-		protected string $userId,
-		protected ?int $page = null,
-	) {
-	}
-
-
-	public function defaultQuery(): array
-	{
-		return array_filter(['page' => $this->page]);
-	}
+    public function defaultQuery(): array
+    {
+        return array_filter(['page' => $this->page]);
+    }
 }
