@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Files;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -16,20 +17,17 @@ use Saloon\Http\Request;
  */
 class GetFileInfo extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/files/{$this->fileId}/info";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/files/{$this->fileId}/info";
-	}
-
-
-	/**
-	 * @param string $fileId The ID of the file info to get
-	 */
-	public function __construct(
-		protected string $fileId,
-	) {
-	}
+    /**
+     * @param  string  $fileId  The ID of the file info to get
+     */
+    public function __construct(
+        protected string $fileId,
+    ) {}
 }

@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Channels;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -17,22 +18,19 @@ use Saloon\Http\Request;
  */
 class GetChannelMembersForUser extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/users/{$this->userId}/teams/{$this->teamId}/channels/members";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/{$this->userId}/teams/{$this->teamId}/channels/members";
-	}
-
-
-	/**
-	 * @param string $userId User GUID
-	 * @param string $teamId Team GUID
-	 */
-	public function __construct(
-		protected string $userId,
-		protected string $teamId,
-	) {
-	}
+    /**
+     * @param  string  $userId  User GUID
+     * @param  string  $teamId  Team GUID
+     */
+    public function __construct(
+        protected string $userId,
+        protected string $teamId,
+    ) {}
 }

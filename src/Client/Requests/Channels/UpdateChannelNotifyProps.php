@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Channels;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -16,22 +17,19 @@ use Saloon\Http\Request;
  */
 class UpdateChannelNotifyProps extends Request
 {
-	protected Method $method = Method::PUT;
+    protected Method $method = Method::PUT;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/channels/{$this->channelId}/members/{$this->userId}/notify_props";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/channels/{$this->channelId}/members/{$this->userId}/notify_props";
-	}
-
-
-	/**
-	 * @param string $channelId Channel GUID
-	 * @param string $userId User GUID
-	 */
-	public function __construct(
-		protected string $channelId,
-		protected string $userId,
-	) {
-	}
+    /**
+     * @param  string  $channelId  Channel GUID
+     * @param  string  $userId  User GUID
+     */
+    public function __construct(
+        protected string $channelId,
+        protected string $userId,
+    ) {}
 }

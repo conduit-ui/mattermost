@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Commands;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -19,20 +20,17 @@ use Saloon\Http\Request;
  */
 class GetCommandById extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/commands/{$this->commandId}";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/commands/{$this->commandId}";
-	}
-
-
-	/**
-	 * @param string $commandId ID of the command to get
-	 */
-	public function __construct(
-		protected string $commandId,
-	) {
-	}
+    /**
+     * @param  string  $commandId  ID of the command to get
+     */
+    public function __construct(
+        protected string $commandId,
+    ) {}
 }

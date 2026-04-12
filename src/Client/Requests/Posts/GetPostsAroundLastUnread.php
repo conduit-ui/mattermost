@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Posts;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -19,44 +20,40 @@ use Saloon\Http\Request;
  */
 class GetPostsAroundLastUnread extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/users/{$this->userId}/channels/{$this->channelId}/posts/unread";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/{$this->userId}/channels/{$this->channelId}/posts/unread";
-	}
+    /**
+     * @param  string  $userId  ID of the user
+     * @param  string  $channelId  The channel ID to get the posts for
+     * @param  null|int  $limitBefore  Number of posts before the oldest unread posts. Maximum is 200 posts if limit is set greater than that.
+     * @param  null|int  $limitAfter  Number of posts after and including the oldest unread post. Maximum is 200 posts if limit is set greater than that.
+     * @param  null|bool  $skipFetchThreads  Whether to skip fetching threads or not
+     * @param  null|bool  $collapsedThreads  Whether the client uses CRT or not
+     * @param  null|bool  $collapsedThreadsExtended  Whether to return the associated users as part of the response or not
+     */
+    public function __construct(
+        protected string $userId,
+        protected string $channelId,
+        protected ?int $limitBefore = null,
+        protected ?int $limitAfter = null,
+        protected ?bool $skipFetchThreads = null,
+        protected ?bool $collapsedThreads = null,
+        protected ?bool $collapsedThreadsExtended = null,
+    ) {}
 
-
-	/**
-	 * @param string $userId ID of the user
-	 * @param string $channelId The channel ID to get the posts for
-	 * @param null|int $limitBefore Number of posts before the oldest unread posts. Maximum is 200 posts if limit is set greater than that.
-	 * @param null|int $limitAfter Number of posts after and including the oldest unread post. Maximum is 200 posts if limit is set greater than that.
-	 * @param null|bool $skipFetchThreads Whether to skip fetching threads or not
-	 * @param null|bool $collapsedThreads Whether the client uses CRT or not
-	 * @param null|bool $collapsedThreadsExtended Whether to return the associated users as part of the response or not
-	 */
-	public function __construct(
-		protected string $userId,
-		protected string $channelId,
-		protected ?int $limitBefore = null,
-		protected ?int $limitAfter = null,
-		protected ?bool $skipFetchThreads = null,
-		protected ?bool $collapsedThreads = null,
-		protected ?bool $collapsedThreadsExtended = null,
-	) {
-	}
-
-
-	public function defaultQuery(): array
-	{
-		return array_filter([
-			'limit_before' => $this->limitBefore,
-			'limit_after' => $this->limitAfter,
-			'skipFetchThreads' => $this->skipFetchThreads,
-			'collapsedThreads' => $this->collapsedThreads,
-			'collapsedThreadsExtended' => $this->collapsedThreadsExtended,
-		]);
-	}
+    public function defaultQuery(): array
+    {
+        return array_filter([
+            'limit_before' => $this->limitBefore,
+            'limit_after' => $this->limitAfter,
+            'skipFetchThreads' => $this->skipFetchThreads,
+            'collapsedThreads' => $this->collapsedThreads,
+            'collapsedThreadsExtended' => $this->collapsedThreadsExtended,
+        ]);
+    }
 }

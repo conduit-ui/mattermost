@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Users;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -16,16 +17,12 @@ use Saloon\Http\Request;
  */
 class AttachDeviceId extends Request
 {
-	protected Method $method = Method::PUT;
+    protected Method $method = Method::PUT;
 
+    public function resolveEndpoint(): string
+    {
+        return '/api/v4/users/sessions/device';
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/sessions/device";
-	}
-
-
-	public function __construct()
-	{
-	}
+    public function __construct() {}
 }

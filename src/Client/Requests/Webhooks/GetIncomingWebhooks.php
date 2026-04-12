@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Webhooks;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -17,28 +18,24 @@ use Saloon\Http\Request;
  */
 class GetIncomingWebhooks extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return '/api/v4/hooks/incoming';
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/hooks/incoming";
-	}
+    /**
+     * @param  null|int  $page  The page to select.
+     * @param  null|string  $teamId  The ID of the team to get hooks for.
+     */
+    public function __construct(
+        protected ?int $page = null,
+        protected ?string $teamId = null,
+    ) {}
 
-
-	/**
-	 * @param null|int $page The page to select.
-	 * @param null|string $teamId The ID of the team to get hooks for.
-	 */
-	public function __construct(
-		protected ?int $page = null,
-		protected ?string $teamId = null,
-	) {
-	}
-
-
-	public function defaultQuery(): array
-	{
-		return array_filter(['page' => $this->page, 'team_id' => $this->teamId]);
-	}
+    public function defaultQuery(): array
+    {
+        return array_filter(['page' => $this->page, 'team_id' => $this->teamId]);
+    }
 }

@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Commands;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -16,20 +17,17 @@ use Saloon\Http\Request;
  */
 class RegenCommandToken extends Request
 {
-	protected Method $method = Method::PUT;
+    protected Method $method = Method::PUT;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/commands/{$this->commandId}/regen_token";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/commands/{$this->commandId}/regen_token";
-	}
-
-
-	/**
-	 * @param string $commandId ID of the command to generate the new token
-	 */
-	public function __construct(
-		protected string $commandId,
-	) {
-	}
+    /**
+     * @param  string  $commandId  ID of the command to generate the new token
+     */
+    public function __construct(
+        protected string $commandId,
+    ) {}
 }

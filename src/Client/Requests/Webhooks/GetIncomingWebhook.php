@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Webhooks;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -16,20 +17,17 @@ use Saloon\Http\Request;
  */
 class GetIncomingWebhook extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/hooks/incoming/{$this->hookId}";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/hooks/incoming/{$this->hookId}";
-	}
-
-
-	/**
-	 * @param string $hookId Incoming Webhook GUID
-	 */
-	public function __construct(
-		protected string $hookId,
-	) {
-	}
+    /**
+     * @param  string  $hookId  Incoming Webhook GUID
+     */
+    public function __construct(
+        protected string $hookId,
+    ) {}
 }

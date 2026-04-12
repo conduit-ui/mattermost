@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Teams;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -15,20 +16,17 @@ use Saloon\Http\Request;
  */
 class TeamExists extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/teams/name/{$this->name}/exists";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/teams/name/{$this->name}/exists";
-	}
-
-
-	/**
-	 * @param string $name Team Name
-	 */
-	public function __construct(
-		protected string $name,
-	) {
-	}
+    /**
+     * @param  string  $name  Team Name
+     */
+    public function __construct(
+        protected string $name,
+    ) {}
 }

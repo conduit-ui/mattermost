@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Webhooks;
 
-use DateTime;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -18,22 +19,19 @@ use Saloon\Traits\Body\HasJsonBody;
  */
 class RegenOutgoingHookToken extends Request implements HasBody
 {
-	use HasJsonBody;
+    use HasJsonBody;
 
-	protected Method $method = Method::POST;
+    protected Method $method = Method::POST;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/hooks/outgoing/{$this->hookId}/regen_token";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/hooks/outgoing/{$this->hookId}/regen_token";
-	}
-
-
-	/**
-	 * @param string $hookId Outgoing webhook GUID
-	 */
-	public function __construct(
-		protected string $hookId,
-	) {
-	}
+    /**
+     * @param  string  $hookId  Outgoing webhook GUID
+     */
+    public function __construct(
+        protected string $hookId,
+    ) {}
 }

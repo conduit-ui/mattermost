@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Posts;
 
-use DateTime;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -19,28 +20,24 @@ use Saloon\Traits\Body\HasJsonBody;
  */
 class CreatePost extends Request implements HasBody
 {
-	use HasJsonBody;
+    use HasJsonBody;
 
-	protected Method $method = Method::POST;
+    protected Method $method = Method::POST;
 
+    public function resolveEndpoint(): string
+    {
+        return '/api/v4/posts';
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/posts";
-	}
+    /**
+     * @param  null|bool  $setOnline  Whether to set the user status as online or not.
+     */
+    public function __construct(
+        protected ?bool $setOnline = null,
+    ) {}
 
-
-	/**
-	 * @param null|bool $setOnline Whether to set the user status as online or not.
-	 */
-	public function __construct(
-		protected ?bool $setOnline = null,
-	) {
-	}
-
-
-	public function defaultQuery(): array
-	{
-		return array_filter(['set_online' => $this->setOnline]);
-	}
+    public function defaultQuery(): array
+    {
+        return array_filter(['set_online' => $this->setOnline]);
+    }
 }

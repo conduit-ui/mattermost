@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Threads;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -23,26 +24,23 @@ use Saloon\Http\Request;
  */
 class SetThreadUnreadByPostId extends Request
 {
-	protected Method $method = Method::PUT;
+    protected Method $method = Method::PUT;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/users/{$this->userId}/teams/{$this->teamId}/threads/{$this->threadId}/set_unread/{$this->postId}";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/{$this->userId}/teams/{$this->teamId}/threads/{$this->threadId}/set_unread/{$this->postId}";
-	}
-
-
-	/**
-	 * @param string $userId The ID of the user. This can also be "me" which will point to the current user.
-	 * @param string $teamId The ID of the team in which the thread is.
-	 * @param string $threadId The ID of the thread to update
-	 * @param string $postId The ID of a post belonging to the thread to mark as unread.
-	 */
-	public function __construct(
-		protected string $userId,
-		protected string $teamId,
-		protected string $threadId,
-		protected string $postId,
-	) {
-	}
+    /**
+     * @param  string  $userId  The ID of the user. This can also be "me" which will point to the current user.
+     * @param  string  $teamId  The ID of the team in which the thread is.
+     * @param  string  $threadId  The ID of the thread to update
+     * @param  string  $postId  The ID of a post belonging to the thread to mark as unread.
+     */
+    public function __construct(
+        protected string $userId,
+        protected string $teamId,
+        protected string $threadId,
+        protected string $postId,
+    ) {}
 }

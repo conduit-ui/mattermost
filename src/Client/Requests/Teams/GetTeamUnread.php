@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Teams;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -16,22 +17,19 @@ use Saloon\Http\Request;
  */
 class GetTeamUnread extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/users/{$this->userId}/teams/{$this->teamId}/unread";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/users/{$this->userId}/teams/{$this->teamId}/unread";
-	}
-
-
-	/**
-	 * @param string $userId User GUID
-	 * @param string $teamId Team GUID
-	 */
-	public function __construct(
-		protected string $userId,
-		protected string $teamId,
-	) {
-	}
+    /**
+     * @param  string  $userId  User GUID
+     * @param  string  $teamId  Team GUID
+     */
+    public function __construct(
+        protected string $userId,
+        protected string $teamId,
+    ) {}
 }

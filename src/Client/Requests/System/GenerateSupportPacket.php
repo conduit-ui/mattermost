@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\System;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -20,16 +21,12 @@ use Saloon\Http\Request;
  */
 class GenerateSupportPacket extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return '/api/v4/system/support_packet';
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/system/support_packet";
-	}
-
-
-	public function __construct()
-	{
-	}
+    public function __construct() {}
 }

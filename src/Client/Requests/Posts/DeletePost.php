@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Posts;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -17,20 +18,17 @@ use Saloon\Http\Request;
  */
 class DeletePost extends Request
 {
-	protected Method $method = Method::DELETE;
+    protected Method $method = Method::DELETE;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/posts/{$this->postId}";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/posts/{$this->postId}";
-	}
-
-
-	/**
-	 * @param string $postId ID of the post to delete
-	 */
-	public function __construct(
-		protected string $postId,
-	) {
-	}
+    /**
+     * @param  string  $postId  ID of the post to delete
+     */
+    public function __construct(
+        protected string $postId,
+    ) {}
 }

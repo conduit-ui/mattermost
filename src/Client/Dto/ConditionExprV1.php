@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Dto;
 
 use Spatie\LaravelData\Data as SpatieData;
@@ -10,11 +12,14 @@ use Spatie\LaravelData\Data as SpatieData;
  */
 class ConditionExprV1 extends SpatieData
 {
-	public function __construct(
-		public ?array $and = null,
-		public ?ComparisonCondition $is = null,
-		public ?ComparisonCondition $isNot = null,
-		public ?array $or = null,
-	) {
-	}
+    /**
+     * @param  array<int, mixed>  $and
+     * @param  array<int, mixed>  $or
+     */
+    public function __construct(
+        public ?array $and = null,
+        public ?ComparisonCondition $is = null,
+        public ?ComparisonCondition $isNot = null,
+        public ?array $or = null,
+    ) {}
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Dto;
 
 use Spatie\LaravelData\Data as SpatieData;
@@ -9,9 +11,12 @@ use Spatie\LaravelData\Data as SpatieData;
  */
 class OrderedSidebarCategories extends SpatieData
 {
-	public function __construct(
-		public ?array $categories = null,
-		public ?array $order = null,
-	) {
-	}
+    /**
+     * @param  array<int, mixed>  $categories
+     * @param  array<int, mixed>  $order
+     */
+    public function __construct(
+        public ?array $categories = null,
+        public ?array $order = null,
+    ) {}
 }

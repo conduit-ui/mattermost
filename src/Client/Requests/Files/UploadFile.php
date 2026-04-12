@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Files;
 
-use DateTime;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -30,30 +31,26 @@ use Saloon\Traits\Body\HasJsonBody;
  */
 class UploadFile extends Request implements HasBody
 {
-	use HasJsonBody;
+    use HasJsonBody;
 
-	protected Method $method = Method::POST;
+    protected Method $method = Method::POST;
 
+    public function resolveEndpoint(): string
+    {
+        return '/api/v4/files';
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/files";
-	}
+    /**
+     * @param  null|string  $channelId  The ID of the channel that this file will be uploaded to
+     * @param  null|string  $filename  The name of the file to be uploaded
+     */
+    public function __construct(
+        protected ?string $channelId = null,
+        protected ?string $filename = null,
+    ) {}
 
-
-	/**
-	 * @param null|string $channelId The ID of the channel that this file will be uploaded to
-	 * @param null|string $filename The name of the file to be uploaded
-	 */
-	public function __construct(
-		protected ?string $channelId = null,
-		protected ?string $filename = null,
-	) {
-	}
-
-
-	public function defaultQuery(): array
-	{
-		return array_filter(['channel_id' => $this->channelId, 'filename' => $this->filename]);
-	}
+    public function defaultQuery(): array
+    {
+        return array_filter(['channel_id' => $this->channelId, 'filename' => $this->filename]);
+    }
 }

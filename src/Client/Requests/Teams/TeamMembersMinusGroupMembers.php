@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Teams;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -24,30 +25,26 @@ use Saloon\Http\Request;
  */
 class TeamMembersMinusGroupMembers extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/teams/{$this->teamId}/members_minus_group_members";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/teams/{$this->teamId}/members_minus_group_members";
-	}
+    /**
+     * @param  string  $teamId  Team GUID
+     * @param  string  $groupIds  A comma-separated list of group ids.
+     * @param  null|int  $page  The page to select.
+     */
+    public function __construct(
+        protected string $teamId,
+        protected string $groupIds,
+        protected ?int $page = null,
+    ) {}
 
-
-	/**
-	 * @param string $teamId Team GUID
-	 * @param string $groupIds A comma-separated list of group ids.
-	 * @param null|int $page The page to select.
-	 */
-	public function __construct(
-		protected string $teamId,
-		protected string $groupIds,
-		protected ?int $page = null,
-	) {
-	}
-
-
-	public function defaultQuery(): array
-	{
-		return array_filter(['group_ids' => $this->groupIds, 'page' => $this->page]);
-	}
+    public function defaultQuery(): array
+    {
+        return array_filter(['group_ids' => $this->groupIds, 'page' => $this->page]);
+    }
 }

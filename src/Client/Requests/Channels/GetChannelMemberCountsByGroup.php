@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Channels;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -18,28 +19,24 @@ use Saloon\Http\Request;
  */
 class GetChannelMemberCountsByGroup extends Request
 {
-	protected Method $method = Method::GET;
+    protected Method $method = Method::GET;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/channels/{$this->channelId}/member_counts_by_group";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/channels/{$this->channelId}/member_counts_by_group";
-	}
+    /**
+     * @param  string  $channelId  Channel GUID
+     * @param  null|bool  $includeTimezones  Defines if member timezone counts should be returned or not
+     */
+    public function __construct(
+        protected string $channelId,
+        protected ?bool $includeTimezones = null,
+    ) {}
 
-
-	/**
-	 * @param string $channelId Channel GUID
-	 * @param null|bool $includeTimezones Defines if member timezone counts should be returned or not
-	 */
-	public function __construct(
-		protected string $channelId,
-		protected ?bool $includeTimezones = null,
-	) {
-	}
-
-
-	public function defaultQuery(): array
-	{
-		return array_filter(['include_timezones' => $this->includeTimezones]);
-	}
+    public function defaultQuery(): array
+    {
+        return array_filter(['include_timezones' => $this->includeTimezones]);
+    }
 }

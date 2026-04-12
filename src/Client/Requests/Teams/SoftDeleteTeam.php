@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Teams;
 
-use DateTime;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -21,28 +22,24 @@ use Saloon\Http\Request;
  */
 class SoftDeleteTeam extends Request
 {
-	protected Method $method = Method::DELETE;
+    protected Method $method = Method::DELETE;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/teams/{$this->teamId}";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/teams/{$this->teamId}";
-	}
+    /**
+     * @param  string  $teamId  Team GUID
+     * @param  null|bool  $permanent  Permanently delete the team, to be used for compliance reasons only. As of server version 5.0, `ServiceSettings.EnableAPITeamDeletion` must be set to `true` in the server's configuration.
+     */
+    public function __construct(
+        protected string $teamId,
+        protected ?bool $permanent = null,
+    ) {}
 
-
-	/**
-	 * @param string $teamId Team GUID
-	 * @param null|bool $permanent Permanently delete the team, to be used for compliance reasons only. As of server version 5.0, `ServiceSettings.EnableAPITeamDeletion` must be set to `true` in the server's configuration.
-	 */
-	public function __construct(
-		protected string $teamId,
-		protected ?bool $permanent = null,
-	) {
-	}
-
-
-	public function defaultQuery(): array
-	{
-		return array_filter(['permanent' => $this->permanent]);
-	}
+    public function defaultQuery(): array
+    {
+        return array_filter(['permanent' => $this->permanent]);
+    }
 }

@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ConduitUI\Mattermost\Client\Requests\Channels;
 
-use DateTime;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -18,22 +19,19 @@ use Saloon\Traits\Body\HasJsonBody;
  */
 class GetChannelMembersByIds extends Request implements HasBody
 {
-	use HasJsonBody;
+    use HasJsonBody;
 
-	protected Method $method = Method::POST;
+    protected Method $method = Method::POST;
 
+    public function resolveEndpoint(): string
+    {
+        return "/api/v4/channels/{$this->channelId}/members/ids";
+    }
 
-	public function resolveEndpoint(): string
-	{
-		return "/api/v4/channels/{$this->channelId}/members/ids";
-	}
-
-
-	/**
-	 * @param string $channelId Channel GUID
-	 */
-	public function __construct(
-		protected string $channelId,
-	) {
-	}
+    /**
+     * @param  string  $channelId  Channel GUID
+     */
+    public function __construct(
+        protected string $channelId,
+    ) {}
 }
