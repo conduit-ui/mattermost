@@ -8,11 +8,11 @@ use ConduitUI\Mattermost\Streaming\Chunks\StreamChunk;
 use ConduitUI\Mattermost\Streaming\Chunks\TextChunk;
 use ConduitUI\Mattermost\Streaming\Chunks\ToolCallChunk;
 
-final class StreamCollector
+final readonly class StreamCollector
 {
     public function __construct(
-        private readonly float $updateInterval = 1.5,
-        private readonly int $minCharDelta = 20,
+        private float $updateInterval = 1.5,
+        private int $minCharDelta = 20,
     ) {}
 
     /**
