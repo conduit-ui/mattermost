@@ -37,9 +37,6 @@ class MattermostFake extends MattermostManager
     /** @var array<string, MattermostConnector> */
     protected array $fakeConnections = [];
 
-    /** @var array<string, MockResponse|Closure> */
-    protected array $defaultResponses = [];
-
     protected bool $preventStrayPosts = false;
 
     /**
@@ -48,9 +45,8 @@ class MattermostFake extends MattermostManager
      *
      * @param  array<class-string, MockResponse|Closure(PendingRequest):MockResponse>  $defaultResponses
      */
-    public function __construct(array $defaultResponses = [])
+    public function __construct(protected array $defaultResponses = [])
     {
-        $this->defaultResponses = $defaultResponses;
     }
 
     #[\Override]
@@ -368,7 +364,7 @@ class MattermostFake extends MattermostManager
     {
         $matches = $this->recorded($requestClass);
 
-        if ($callback !== null) {
+        if ($callback instanceof \Closure) {
             $matches = array_values(array_filter($matches, $callback));
         }
 
@@ -391,7 +387,7 @@ class MattermostFake extends MattermostManager
     {
         $matches = $this->recorded($requestClass);
 
-        if ($callback !== null) {
+        if ($callback instanceof \Closure) {
             $matches = array_values(array_filter($matches, $callback));
         }
 

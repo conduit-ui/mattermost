@@ -32,7 +32,7 @@ class RecordedRequest
         $body = $pendingRequest->body();
         $payload = [];
 
-        if ($body !== null) {
+        if ($body instanceof \Saloon\Contracts\Body\BodyRepository) {
             $rawBody = $body->all();
 
             if (is_array($rawBody)) {
