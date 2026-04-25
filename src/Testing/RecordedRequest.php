@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ConduitUI\Mattermost\Testing;
 
+use Saloon\Contracts\Body\BodyRepository;
 use Saloon\Http\PendingRequest;
 use Saloon\Http\Request;
 
@@ -32,7 +33,7 @@ class RecordedRequest
         $body = $pendingRequest->body();
         $payload = [];
 
-        if ($body instanceof \Saloon\Contracts\Body\BodyRepository) {
+        if ($body instanceof BodyRepository) {
             $rawBody = $body->all();
 
             if (is_array($rawBody)) {
