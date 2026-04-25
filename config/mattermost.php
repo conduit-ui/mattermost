@@ -62,7 +62,6 @@ return [
 
         'dedup_ttl' => env('MATTERMOST_DEDUP_TTL', 60),
         'rate_limit_seconds' => env('MATTERMOST_RATE_LIMIT', 30),
-        'ignore_bots' => true,
         'allowed_channels' => [],
         'admin_cache_ttl' => env('MATTERMOST_ADMIN_CACHE_TTL', 300),
         'queue' => env('MATTERMOST_BOT_QUEUE'),

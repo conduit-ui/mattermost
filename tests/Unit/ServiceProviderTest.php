@@ -11,7 +11,7 @@ it('loads default connection config', function (): void {
 
 it('loads bot config', function (): void {
     expect(config('mattermost.bot.dedup_ttl'))->toBe(60);
-    expect(config('mattermost.bot.ignore_bots'))->toBeTrue();
+    expect(config('mattermost.bot.rate_limit_seconds'))->toBe(30);
 });
 
 it('loads websocket config', function (): void {

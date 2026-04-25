@@ -12,12 +12,14 @@ use ConduitUI\Mattermost\WebSocket\Events\PostCreated;
  * Skip events authored by bot users (including this bot itself).
  *
  * Without this, a bot that replies to mentions can self-trigger when its own
- * post arrives back over the WebSocket. Recognises three signals:
+ * post arrives back over the WebSocket. Recognises two signals:
  *
- *  1. The post's author matches the configured `bot_user_id` for the
- *     active connection.
- *  2. The post's `props.from_bot` flag is `true` (set by other bots).
- *  3. The author is the configured `bot_user_id` from any connection.
+ *  1. The post's `props.from_bot` flag is `true` (set by Mattermost on any
+ *     bot-authored post).
+ *  2. The post's author matches the `bot_user_id` of any configured
+ *     connection — not just the active one. This is intentional for a
+ *     global middleware: a multi-server deployment may share state, and
+ *     dropping events authored by a peer bot is almost always the right call.
  */
 class IgnoreBots implements Middleware
 {

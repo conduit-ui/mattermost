@@ -142,6 +142,13 @@ abstract class Handler
         $name = $this->connectionName() ?? config('mattermost.default', 'default');
         $configured = config(sprintf('mattermost.connections.%s.bot_user_id', $name));
 
-        return is_string($configured) && $configured !== '' ? $configured : 'me';
+        if (! is_string($configured) || $configured === '') {
+            throw new \RuntimeException(sprintf(
+                'mattermost.connections.%s.bot_user_id is not configured. Set MATTERMOST_BOT_USER_ID (or the connection-specific equivalent) before calling react() / typing() on a handler.',
+                $name,
+            ));
+        }
+
+        return $configured;
     }
 }
