@@ -59,10 +59,10 @@ class Action
         $this->options = array_map(
             static function (array $option): array {
                 if (isset($option['text'], $option['value'])) {
-                    return ['text' => (string) $option['text'], 'value' => (string) $option['value']];
+                    return ['text' => $option['text'], 'value' => $option['value']];
                 }
 
-                return ['text' => (string) $option[0], 'value' => (string) $option[1]];
+                return ['text' => $option[0], 'value' => $option[1]];
             },
             $options,
         );
