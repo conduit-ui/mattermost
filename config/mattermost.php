@@ -36,12 +36,37 @@ return [
     |--------------------------------------------------------------------------
     | Bot Settings
     |--------------------------------------------------------------------------
+    |
+    | Tunables for the bot framework's router and built-in middleware.
+    |
+    | - `middleware`: global middleware applied to every handler. Listed by
+    |   FQCN. Per-handler middleware is added on top via the
+    |   `#[Middleware(...)]` attribute on the handler class.
+    | - `dedup_ttl`: seconds a `channel:post` key is held in cache to drop
+    |   duplicate event redeliveries.
+    | - `rate_limit_seconds`: per-channel cooldown between accepted posts.
+    |   DMs are exempt.
+    | - `allowed_channels`: when non-empty, the `ChannelFilter` middleware
+    |   only allows events from these channel ids/names.
+    | - `admin_cache_ttl`: cache lifetime for `AdminOnly`'s role lookup.
+    | - `queue` / `queue_connection`: dispatch ShouldQueue handlers onto a
+    |   specific queue/connection. `null` falls back to defaults.
+    |
     */
 
     'bot' => [
+        'middleware' => [
+            // ConduitUI\Mattermost\Bot\Middleware\IgnoreBots::class,
+            // ConduitUI\Mattermost\Bot\Middleware\Dedup::class,
+        ],
+
         'dedup_ttl' => env('MATTERMOST_DEDUP_TTL', 60),
         'rate_limit_seconds' => env('MATTERMOST_RATE_LIMIT', 30),
         'ignore_bots' => true,
+        'allowed_channels' => [],
+        'admin_cache_ttl' => env('MATTERMOST_ADMIN_CACHE_TTL', 300),
+        'queue' => env('MATTERMOST_BOT_QUEUE'),
+        'queue_connection' => env('MATTERMOST_BOT_QUEUE_CONNECTION'),
     ],
 
     /*
