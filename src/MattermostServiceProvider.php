@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace ConduitUI\Mattermost;
 
+use ConduitUI\Mattermost\Filament\Stats\MattermostStats;
 use ConduitUI\Mattermost\Notifications\MattermostBroadcaster;
+use Filament\Panel;
 use Illuminate\Contracts\Broadcasting\Factory as BroadcastFactory;
+use Illuminate\Contracts\Cache\Repository as CacheRepository;
 use Illuminate\Support\ServiceProvider;
 
 class MattermostServiceProvider extends ServiceProvider
@@ -16,6 +19,11 @@ class MattermostServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/mattermost.php', 'mattermost');
 
         $this->app->scoped(MattermostManager::class);
+
+        $this->app->singleton(MattermostStats::class, fn ($app): MattermostStats => new MattermostStats(
+            $app->make(CacheRepository::class),
+            (string) ($app['config']->get('mattermost.default') ?? 'default'),
+        ));
     }
 
     public function boot(): void
@@ -27,6 +35,7 @@ class MattermostServiceProvider extends ServiceProvider
         }
 
         $this->registerBroadcaster();
+        $this->bootFilamentPanel();
     }
 
     private function registerBroadcaster(): void
@@ -42,5 +51,21 @@ class MattermostServiceProvider extends ServiceProvider
             $app->make(MattermostManager::class),
             $config['connection'] ?? null,
         ));
+    }
+
+    /**
+     * Register Filament views when Filament is installed in the host application.
+     *
+     * The check is intentionally narrow — `class_exists(\Filament\Panel::class)`
+     * — so the package never hard-depends on Filament. When Filament is
+     * absent, this method short-circuits and the panel pages remain inert.
+     */
+    private function bootFilamentPanel(): void
+    {
+        if (! class_exists(Panel::class)) {
+            return;
+        }
+
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'mattermost');
     }
 }
