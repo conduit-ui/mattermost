@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace ConduitUI\Mattermost\Client\Requests\Posts;
 
+use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\Traits\Body\HasJsonBody;
 
 /**
  * PatchPost
@@ -16,8 +18,10 @@ use Saloon\Http\Request;
  * ##### Permissions
  * Must have the `edit_post` permission.
  */
-class PatchPost extends Request
+class PatchPost extends Request implements HasBody
 {
+    use HasJsonBody;
+
     protected Method $method = Method::PUT;
 
     public function resolveEndpoint(): string
