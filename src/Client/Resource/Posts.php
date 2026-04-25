@@ -46,11 +46,22 @@ class Posts extends BaseResource
     }
 
     /**
-     * @param  bool  $setOnline  Whether to set the user status as online or not.
+     * @param  string|null  $channelId  The channel ID to post to.
+     * @param  string|null  $message  The message contents (markdown supported).
+     * @param  string|null  $rootId  The post ID to reply to. Creates a thread reply.
+     * @param  array<int, string>|null  $fileIds  IDs of uploaded files to attach.
+     * @param  array<string, mixed>|null  $props  Custom properties (e.g. `attachments`).
+     * @param  bool|null  $setOnline  Whether to set the user status as online or not.
      */
-    public function createPost(?bool $setOnline = null): Response
-    {
-        return $this->connector->send(new CreatePost($setOnline));
+    public function createPost(
+        ?string $channelId = null,
+        ?string $message = null,
+        ?string $rootId = null,
+        ?array $fileIds = null,
+        ?array $props = null,
+        ?bool $setOnline = null,
+    ): Response {
+        return $this->connector->send(new CreatePost($channelId, $message, $rootId, $fileIds, $props, $setOnline));
     }
 
     public function createPostEphemeral(): Response
