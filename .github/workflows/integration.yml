@@ -19,6 +19,9 @@ jobs:
           MM_SQLSETTINGS_DATASOURCE: postgres://mmuser:mmpass@postgres:5432/mattermost?sslmode=disable
           MM_SERVICESETTINGS_ENABLEBOTACCOUNTCREATION: 'true'
           MM_SERVICESETTINGS_ENABLEUSERACCESSTOKENS: 'true'
+          # Required for the in-suite bootstrap helper to create the first
+          # admin via POST /api/v4/users without an invite link.
+          MM_TEAMSETTINGS_ENABLEOPENSERVER: 'true'
       postgres:
         image: postgres:16
         ports:
@@ -48,6 +51,11 @@ jobs:
             sleep 2
           done
 
+      # The first test triggers tests/Integration/Bootstrap.php which
+      # creates the admin user, team, bot, and PAT inline (one-shot, ~2-5s).
+      # Bootstrap timeout: 60s — if Mattermost isn't ready by then the
+      # whole suite skips with a clear "not reachable" message instead of
+      # failing.
       - name: Run integration tests
         run: vendor/bin/pest --testsuite=Integration
         env:
