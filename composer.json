@@ -14,6 +14,8 @@
         "php": "^8.4",
         "illuminate/contracts": "^13.0",
         "illuminate/support": "^13.0",
+        "ratchet/pawl": "^0.4.1",
+        "react/event-loop": "^1.5",
         "saloonphp/saloon": "^4.0"
     },
     "require-dev": {
