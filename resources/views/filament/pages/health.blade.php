@@ -32,7 +32,7 @@
                 <dl class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
                     <div class="rounded-lg border border-gray-200 p-4">
                         <dt class="text-xs uppercase text-gray-500">Username</dt>
-                        <dd class="mt-1 text-sm">@{{ $identity['username'] }}</dd>
+                        <dd class="mt-1 text-sm">{{ $identity['username'] }}</dd>
                     </div>
                     <div class="rounded-lg border border-gray-200 p-4">
                         <dt class="text-xs uppercase text-gray-500">User ID</dt>
@@ -67,9 +67,9 @@
                             @foreach ($channels as $channel)
                                 <tr>
                                     <td class="px-4 py-2">{{ $channel['display_name'] ?: '—' }}</td>
-                                    <td class="px-4 py-2 font-mono text-xs">{{ $channel['name'] }}</td>
-                                    <td class="px-4 py-2 font-mono text-xs">{{ $channel['type'] }}</td>
-                                    <td class="px-4 py-2 font-mono text-xs">{{ $channel['id'] }}</td>
+                                    <td class="px-4 py-2 font-mono text-xs">{{ $channel['name'] ?: '—' }}</td>
+                                    <td class="px-4 py-2 font-mono text-xs">{{ $channel['type'] ?: '—' }}</td>
+                                    <td class="px-4 py-2 font-mono text-xs">{{ $channel['id'] ?: '—' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

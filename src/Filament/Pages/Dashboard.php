@@ -42,6 +42,6 @@ class Dashboard extends Page
     #[\Override]
     public function getHeaderWidgetsColumns(): int|array
     {
-        return 4;
+        return 1;
     }
 }

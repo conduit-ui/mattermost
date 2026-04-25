@@ -92,11 +92,12 @@ class Health extends Page
     }
 
     /**
+     * @param  array<string, mixed>|null  $identity  Pre-resolved identity from getViewData() to avoid re-fetching /users/me.
      * @return array<int, array<string, mixed>>
      */
-    public function getChannelMemberships(): array
+    public function getChannelMemberships(?array $identity = null): array
     {
-        $identity = $this->getBotIdentity();
+        $identity ??= $this->getBotIdentity();
         $userId = $identity['id'] ?? null;
 
         if (! is_string($userId) || $userId === '') {
@@ -133,11 +134,13 @@ class Health extends Page
     #[\Override]
     protected function getViewData(): array
     {
+        $identity = $this->getBotIdentity();
+
         return [
             'api' => $this->getApiHealth(),
             'webSocketState' => $this->getWebSocketState(),
-            'identity' => $this->getBotIdentity(),
-            'channels' => $this->getChannelMemberships(),
+            'identity' => $identity,
+            'channels' => $this->getChannelMemberships($identity),
         ];
     }
 
