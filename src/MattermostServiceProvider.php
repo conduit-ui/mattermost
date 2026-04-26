@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace ConduitUI\Mattermost;
 
+use ConduitUI\Mattermost\Bot\Router as BotRouter;
 use ConduitUI\Mattermost\Filament\Stats\MattermostStats;
 use ConduitUI\Mattermost\Notifications\MattermostBroadcaster;
 use Filament\Panel;
 use Illuminate\Contracts\Broadcasting\Factory as BroadcastFactory;
 use Illuminate\Contracts\Cache\Repository as CacheRepository;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 
 class MattermostServiceProvider extends ServiceProvider
@@ -18,7 +20,9 @@ class MattermostServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/mattermost.php', 'mattermost');
 
-        $this->app->scoped(MattermostManager::class);
+        $this->app->scoped(MattermostManager::class, fn (Container $container): MattermostManager => new MattermostManager($container));
+
+        $this->app->singleton(BotRouter::class, fn (Container $container): BotRouter => new BotRouter($container));
 
         $this->app->singleton(MattermostStats::class, fn ($app): MattermostStats => new MattermostStats(
             $app->make(CacheRepository::class),
@@ -35,6 +39,7 @@ class MattermostServiceProvider extends ServiceProvider
         }
 
         $this->registerBroadcaster();
+        $this->bootBotRouter();
         $this->bootFilamentPanel();
     }
 
@@ -51,6 +56,23 @@ class MattermostServiceProvider extends ServiceProvider
             $app->make(MattermostManager::class),
             $config['connection'] ?? null,
         ));
+    }
+
+    private function bootBotRouter(): void
+    {
+        /** @var BotRouter $router */
+        $router = $this->app->make(BotRouter::class);
+
+        $configured = config('mattermost.bot.middleware', []);
+
+        if (is_array($configured)) {
+            $middleware = array_values(array_filter(
+                $configured,
+                static fn ($value): bool => is_string($value) && $value !== '',
+            ));
+
+            $router->setGlobalMiddleware($middleware);
+        }
     }
 
     /**

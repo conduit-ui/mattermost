@@ -26,9 +26,14 @@ class Reactions extends BaseResource
         return $this->connector->send(new GetReactions($postId));
     }
 
-    public function saveReaction(): Response
+    /**
+     * @param  string|null  $userId  ID of the user reacting
+     * @param  string|null  $postId  ID of the post being reacted to
+     * @param  string|null  $emojiName  Emoji short name (e.g. `eyes`, `+1`)
+     */
+    public function saveReaction(?string $userId = null, ?string $postId = null, ?string $emojiName = null): Response
     {
-        return $this->connector->send(new SaveReaction);
+        return $this->connector->send(new SaveReaction($userId, $postId, $emojiName));
     }
 
     /**
