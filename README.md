@@ -38,6 +38,26 @@ use ConduitUI\Mattermost\Facades\Mattermost;
 Mattermost::post('town-square', 'Hello from Laravel!');
 ```
 
+## Try it
+
+Post a message to any channel from the command line:
+
+```bash
+# Set your connection details in .env
+MATTERMOST_URL=http://localhost:8065
+MATTERMOST_BOT_TOKEN=your-bot-token
+MATTERMOST_TEAM=your-team-name
+
+# Post to the default channel (town-square)
+php artisan mattermost:demo-post
+
+# Post to a specific channel with a custom message
+php artisan mattermost:demo-post general "Deployed v2.0 🚀"
+
+# Override the team name
+php artisan mattermost:demo-post town-square "Hello!" --team=other-team
+```
+
 ## License
 
 MIT
