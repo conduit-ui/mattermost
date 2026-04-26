@@ -9,6 +9,9 @@ services:
       MM_SERVICESETTINGS_ENABLEBOTACCOUNTCREATION: "true"
       MM_SERVICESETTINGS_ENABLEUSERACCESSTOKENS: "true"
       MM_SERVICESETTINGS_SITEURL: http://localhost:8065
+      # Required for the integration suite's bootstrap helper to create
+      # the first admin user via POST /api/v4/users without an invite.
+      MM_TEAMSETTINGS_ENABLEOPENSERVER: "true"
     depends_on:
       - postgres
     restart: unless-stopped
