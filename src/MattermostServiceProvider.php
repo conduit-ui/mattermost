@@ -7,10 +7,13 @@ namespace ConduitUI\Mattermost;
 use ConduitUI\Mattermost\Bot\Router as BotRouter;
 use ConduitUI\Mattermost\Filament\Stats\MattermostStats;
 use ConduitUI\Mattermost\Notifications\MattermostBroadcaster;
+use ConduitUI\Mattermost\SlashCommands\SlashCommandController;
+use ConduitUI\Mattermost\SlashCommands\SlashCommandRouter;
 use Filament\Panel;
 use Illuminate\Contracts\Broadcasting\Factory as BroadcastFactory;
 use Illuminate\Contracts\Cache\Repository as CacheRepository;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class MattermostServiceProvider extends ServiceProvider
@@ -23,6 +26,8 @@ class MattermostServiceProvider extends ServiceProvider
         $this->app->scoped(MattermostManager::class, fn (Container $container): MattermostManager => new MattermostManager($container));
 
         $this->app->singleton(BotRouter::class, fn (Container $container): BotRouter => new BotRouter($container));
+
+        $this->app->singleton(SlashCommandRouter::class, fn (Container $container): SlashCommandRouter => new SlashCommandRouter($container));
 
         $this->app->singleton(MattermostStats::class, fn ($app): MattermostStats => new MattermostStats(
             $app->make(CacheRepository::class),
@@ -40,6 +45,7 @@ class MattermostServiceProvider extends ServiceProvider
 
         $this->registerBroadcaster();
         $this->bootBotRouter();
+        $this->bootSlashCommandRoute();
         $this->bootFilamentPanel();
     }
 
@@ -73,6 +79,22 @@ class MattermostServiceProvider extends ServiceProvider
 
             $router->setGlobalMiddleware($middleware);
         }
+    }
+
+    private function bootSlashCommandRoute(): void
+    {
+        $uri = config('mattermost.slash_commands.route', 'mattermost/slash-command');
+
+        if (! is_string($uri) || $uri === '') {
+            return;
+        }
+
+        $middleware = config('mattermost.slash_commands.middleware', []);
+        $middleware = is_array($middleware) ? $middleware : [];
+
+        Route::post($uri, SlashCommandController::class)
+            ->middleware($middleware)
+            ->name('mattermost.slash-command');
     }
 
     /**
