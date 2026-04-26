@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace ConduitUI\Mattermost;
 
+use Closure;
 use ConduitUI\Mattermost\Bot\Handler;
 use ConduitUI\Mattermost\Bot\Middleware\Middleware as BotMiddleware;
 use ConduitUI\Mattermost\Bot\Router as BotRouter;
 use ConduitUI\Mattermost\Client\Mattermost;
+use ConduitUI\Mattermost\SlashCommands\SlashCommand;
+use ConduitUI\Mattermost\SlashCommands\SlashCommandHandler;
+use ConduitUI\Mattermost\SlashCommands\SlashCommandResponse;
+use ConduitUI\Mattermost\SlashCommands\SlashCommandRouter;
 use ConduitUI\Mattermost\WebSocket\Events\Event;
 use Illuminate\Contracts\Container\Container;
 use InvalidArgumentException;
@@ -74,6 +79,24 @@ class MattermostManager
     public function middleware(string ...$middleware): BotRouter
     {
         return $this->router()->middleware(...$middleware);
+    }
+
+    /**
+     * Resolve the slash command router from the container.
+     */
+    public function slashCommandRouter(): SlashCommandRouter
+    {
+        return $this->resolveContainer()->make(SlashCommandRouter::class);
+    }
+
+    /**
+     * Register a slash command handler — proxy to the slash command router.
+     *
+     * @param  class-string<SlashCommandHandler>|Closure(SlashCommand): SlashCommandResponse  $handler
+     */
+    public function slash(string $command, string|Closure $handler): SlashCommandRouter
+    {
+        return $this->slashCommandRouter()->register($command, $handler);
     }
 
     private function resolveContainer(): Container

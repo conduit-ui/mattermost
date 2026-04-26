@@ -104,6 +104,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Slash Commands
+    |--------------------------------------------------------------------------
+    |
+    | Configure the webhook endpoint that Mattermost POSTs to when a user
+    | invokes a registered slash command. Set `route` to `null` or `''` to
+    | disable the automatic route registration and register your own.
+    |
+    */
+
+    'slash_commands' => [
+        'route' => env('MATTERMOST_SLASH_ROUTE', 'mattermost/slash-command'),
+        'middleware' => [],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | WebSocket
     |--------------------------------------------------------------------------
     */
