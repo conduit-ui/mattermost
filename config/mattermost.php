@@ -24,6 +24,39 @@ return [
     |
     */
 
+    'url' => env('MATTERMOST_URL', 'http://localhost:8065'),
+
+    'token' => env('MATTERMOST_BOT_TOKEN'),
+
+    'team_id' => env('MATTERMOST_TEAM_ID'),
+
+    'bot_user_id' => env('MATTERMOST_BOT_USER_ID'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Slash Commands
+    |--------------------------------------------------------------------------
+    |
+    | Toggle slash-command support and define registered commands.
+    |
+    */
+
+    'enable_slash_commands' => env('MATTERMOST_ENABLE_SLASH_COMMANDS', false),
+
+    'slash_commands' => [
+        // 'greet' => \App\Mattermost\Commands\GreetCommand::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Connections
+    |--------------------------------------------------------------------------
+    |
+    | Named Mattermost server connections. Each connection needs a URL and
+    | bot token at minimum. Add multiple for multi-server support.
+    |
+    */
+
     'connections' => [
         'default' => [
             'url' => env('MATTERMOST_URL', 'http://localhost:8065'),

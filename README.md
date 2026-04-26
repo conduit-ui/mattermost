@@ -29,10 +29,18 @@ composer require conduit-ui/mattermost
 
 ## Quick Start
 
-```php
-// config/mattermost.php is auto-published
+```bash
+php artisan vendor:publish --tag=mattermost-config
+```
 
-// In a service provider or route:
+Set your credentials in `.env`:
+
+```dotenv
+MATTERMOST_URL=https://your-server.example.com
+MATTERMOST_BOT_TOKEN=your-bot-token
+```
+
+```php
 use ConduitUI\Mattermost\Facades\Mattermost;
 
 Mattermost::post('town-square', 'Hello from Laravel!');
