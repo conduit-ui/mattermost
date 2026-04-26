@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ConduitUI\Mattermost;
 
 use ConduitUI\Mattermost\Bot\Router as BotRouter;
+use ConduitUI\Mattermost\Commands\DemoPostCommand;
 use ConduitUI\Mattermost\Filament\Stats\MattermostStats;
 use ConduitUI\Mattermost\Notifications\MattermostBroadcaster;
 use Filament\Panel;
@@ -36,6 +37,10 @@ class MattermostServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__.'/../config/mattermost.php' => config_path('mattermost.php'),
             ], 'mattermost-config');
+
+            $this->commands([
+                DemoPostCommand::class,
+            ]);
         }
 
         $this->registerBroadcaster();

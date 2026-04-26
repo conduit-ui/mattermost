@@ -62,6 +62,7 @@ return [
             'url' => env('MATTERMOST_URL', 'http://localhost:8065'),
             'token' => env('MATTERMOST_BOT_TOKEN'),
             'bot_user_id' => env('MATTERMOST_BOT_USER_ID'),
+            'team' => env('MATTERMOST_TEAM'),
         ],
     ],
 
