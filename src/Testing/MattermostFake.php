@@ -12,6 +12,8 @@ use ConduitUI\Mattermost\Client\Requests\Posts\DeletePost;
 use ConduitUI\Mattermost\Client\Requests\Posts\PatchPost;
 use ConduitUI\Mattermost\Client\Requests\Posts\UpdatePost;
 use ConduitUI\Mattermost\Client\Requests\Reactions\SaveReaction;
+use ConduitUI\Mattermost\Client\Requests\Users\SetDefaultProfileImage;
+use ConduitUI\Mattermost\Client\Requests\Users\SetProfileImage;
 use ConduitUI\Mattermost\Facades\Mattermost;
 use ConduitUI\Mattermost\MattermostManager;
 use PHPUnit\Framework\Assert as PHPUnit;
@@ -335,6 +337,53 @@ class MattermostFake extends MattermostManager
     public function assertFileUploaded(?Closure $callback = null, ?int $times = null): self
     {
         return $this->assertSentForRequest(UploadFile::class, $callback, $times, 'No matching Mattermost file upload was sent.');
+    }
+
+    // ------------------------------------------------------------------
+    // Users API
+    // ------------------------------------------------------------------
+
+    /**
+     * Assert a profile-photo update was sent. Optionally narrow by user id
+     * or with a callback receiving the RecordedRequest.
+     *
+     * @param  Closure(RecordedRequest):bool|null  $callback
+     */
+    public function assertProfilePhotoUpdated(?string $userId = null, ?Closure $callback = null, ?int $times = null): self
+    {
+        $combined = static function (RecordedRequest $record) use ($userId, $callback): bool {
+            if ($userId !== null && ! str_contains($record->url, "/users/{$userId}/image")) {
+                return false;
+            }
+
+            return $callback === null || $callback($record);
+        };
+
+        return $this->assertSentForRequest(SetProfileImage::class, $combined, $times, sprintf(
+            'No matching Mattermost profile-photo update was sent (user_id=%s).',
+            $userId ?? '*',
+        ));
+    }
+
+    /**
+     * Assert the default-image (DELETE) reset was sent.
+     *
+     * @param  Closure(RecordedRequest):bool|null  $callback
+     */
+    public function assertProfilePhotoReset(?string $userId = null, ?Closure $callback = null, ?int $times = null): self
+    {
+        $combined = static function (RecordedRequest $record) use ($userId, $callback): bool {
+            if ($userId !== null && ! str_contains($record->url, "/users/{$userId}/image")) {
+                return false;
+            }
+
+            return $callback === null || $callback($record);
+        };
+
+        return $this->assertSentForRequest(SetDefaultProfileImage::class, $combined, $times, sprintf(
+            'No matching Mattermost profile-photo reset was sent (user_id=%s).',
+            $userId ?? '*',
+        ));
     }
 
     // ------------------------------------------------------------------

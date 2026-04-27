@@ -51,6 +51,8 @@ use ConduitUI\Mattermost\Client\Requests\Users\SearchUserAccessTokens;
 use ConduitUI\Mattermost\Client\Requests\Users\SearchUsers;
 use ConduitUI\Mattermost\Client\Requests\Users\SendPasswordResetEmail;
 use ConduitUI\Mattermost\Client\Requests\Users\SendVerificationEmail;
+use ConduitUI\Mattermost\Client\Requests\Users\SetDefaultProfileImage;
+use ConduitUI\Mattermost\Client\Requests\Users\SetProfileImage;
 use ConduitUI\Mattermost\Client\Requests\Users\SwitchAccountType;
 use ConduitUI\Mattermost\Client\Requests\Users\UpdateUser;
 use ConduitUI\Mattermost\Client\Requests\Users\UpdateUserActive;
@@ -62,6 +64,7 @@ use ConduitUI\Mattermost\Client\Requests\Users\VerifyUserEmail;
 use ConduitUI\Mattermost\Client\Requests\Users\VerifyUserEmailWithoutToken;
 use Saloon\Http\BaseResource;
 use Saloon\Http\Response;
+use SplFileInfo;
 
 class Users extends BaseResource
 {
@@ -533,5 +536,31 @@ class Users extends BaseResource
     public function getUploadsForUser(string $userId): Response
     {
         return $this->connector->send(new GetUploadsForUser($userId));
+    }
+
+    /**
+     * Set the user's profile image. The targeted Mattermost connection must
+     * carry an admin-grade token — bots cannot update their own avatar with
+     * their own token.
+     *
+     * @param  string  $userId  Target user GUID.
+     * @param  string|SplFileInfo|resource  $image  File path, SplFileInfo, or open stream resource.
+     * @param  string|null  $filename  Override the filename sent to the server.
+     */
+    public function updateProfilePhoto(string $userId, mixed $image, ?string $filename = null): Response
+    {
+        return $this->connector->send(new SetProfileImage($userId, $image, $filename));
+    }
+
+    /**
+     * Reset the user's profile image to the auto-generated default. Hits
+     * `DELETE /api/v4/users/{user_id}/image` — requires an admin-grade token
+     * when targeting another user.
+     *
+     * @param  string  $userId  Target user GUID.
+     */
+    public function deleteProfilePhoto(string $userId): Response
+    {
+        return $this->connector->send(new SetDefaultProfileImage($userId));
     }
 }
