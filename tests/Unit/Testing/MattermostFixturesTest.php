@@ -123,12 +123,17 @@ describe('MattermostFixtures::fakeSlashCommand()', function (): void {
 });
 
 describe('MattermostFixtures::fakeButtonClick()', function (): void {
-    it('builds an interactive button payload', function (): void {
+    it('builds an interactive button payload with action and value nested under context', function (): void {
         $payload = MattermostFixtures::fakeButtonClick('approve', 'yes', ['plan_id' => '42']);
 
-        expect($payload['action'])->toBe('approve')
-            ->and($payload['value'])->toBe('yes')
-            ->and($payload['context'])->toBe(['action' => 'approve', 'plan_id' => '42']);
+        expect($payload['type'])->toBe('button')
+            ->and($payload['context'])->toBe([
+                'action' => 'approve',
+                'value' => 'yes',
+                'plan_id' => '42',
+            ])
+            ->and($payload)->not->toHaveKey('action')
+            ->and($payload)->not->toHaveKey('value');
     });
 });
 
