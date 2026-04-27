@@ -32,20 +32,26 @@ class InteractiveAction
 
     /**
      * The action ID identifying which button or menu option was triggered.
+     *
+     * Mattermost passes the integration's `context` object back through the
+     * webhook unchanged. By convention this package keys the action name as
+     * `context.action`, set when registering the button via the message
+     * builder's `integration.context.action` field.
      */
     public function actionId(): string
     {
-        $action = $this->payload['action'] ?? '';
+        $action = $this->payload['context']['action'] ?? '';
 
         return is_string($action) ? $action : '';
     }
 
     /**
-     * The value submitted with the action (button value or selected option).
+     * The value associated with the action — read from `context.value` since
+     * Mattermost does not surface a top-level `value` field on the webhook.
      */
     public function value(): mixed
     {
-        return $this->payload['value'] ?? null;
+        return $this->payload['context']['value'] ?? null;
     }
 
     /**

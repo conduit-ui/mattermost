@@ -320,9 +320,11 @@ class MattermostFixtures
             'trigger_id' => self::id(),
             'type' => 'button',
             'data_source' => '',
-            'context' => array_merge(['action' => $actionId], $context),
-            'action' => $actionId,
-            'value' => $value,
+            'context' => array_merge(
+                ['action' => $actionId],
+                $value !== null ? ['value' => $value] : [],
+                $context,
+            ),
         ];
     }
 
