@@ -9,6 +9,10 @@ use ConduitUI\Mattermost\Bot\Handler;
 use ConduitUI\Mattermost\Bot\Middleware\Middleware as BotMiddleware;
 use ConduitUI\Mattermost\Bot\Router as BotRouter;
 use ConduitUI\Mattermost\Client\Mattermost;
+use ConduitUI\Mattermost\Interactive\InteractiveAction;
+use ConduitUI\Mattermost\Interactive\InteractiveActionHandler;
+use ConduitUI\Mattermost\Interactive\InteractiveActionResponse;
+use ConduitUI\Mattermost\Interactive\InteractiveActionRouter;
 use ConduitUI\Mattermost\SlashCommands\SlashCommand;
 use ConduitUI\Mattermost\SlashCommands\SlashCommandHandler;
 use ConduitUI\Mattermost\SlashCommands\SlashCommandResponse;
@@ -97,6 +101,24 @@ class MattermostManager
     public function slash(string $command, string|Closure $handler): SlashCommandRouter
     {
         return $this->slashCommandRouter()->register($command, $handler);
+    }
+
+    /**
+     * Resolve the interactive action router from the container.
+     */
+    public function interactiveActionRouter(): InteractiveActionRouter
+    {
+        return $this->resolveContainer()->make(InteractiveActionRouter::class);
+    }
+
+    /**
+     * Register an interactive action handler — proxy to the interactive action router.
+     *
+     * @param  class-string<InteractiveActionHandler>|Closure(InteractiveAction): InteractiveActionResponse  $handler
+     */
+    public function interactive(string $actionId, string|Closure $handler): InteractiveActionRouter
+    {
+        return $this->interactiveActionRouter()->register($actionId, $handler);
     }
 
     private function resolveContainer(): Container

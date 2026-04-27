@@ -29,6 +29,8 @@ use Saloon\Http\Faking\MockResponse;
  * @method static \ConduitUI\Mattermost\Bot\Router router()
  * @method static \ConduitUI\Mattermost\SlashCommands\SlashCommandRouter slash(string $command, string|\Closure $handler)
  * @method static \ConduitUI\Mattermost\SlashCommands\SlashCommandRouter slashCommandRouter()
+ * @method static \ConduitUI\Mattermost\Interactive\InteractiveActionRouter interactive(string $actionId, string|\Closure $handler)
+ * @method static \ConduitUI\Mattermost\Interactive\InteractiveActionRouter interactiveActionRouter()
  * @method static \ConduitUI\Mattermost\Testing\MattermostFake assertSent(string|\Closure $value, ?int $times = null)
  * @method static \ConduitUI\Mattermost\Testing\MattermostFake assertNotSent(string|\Closure $value)
  * @method static \ConduitUI\Mattermost\Testing\MattermostFake assertNothingSent()
