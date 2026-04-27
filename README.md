@@ -1,5 +1,13 @@
 # Mattermost for Laravel
 
+[![CI](https://img.shields.io/github/actions/workflow/status/conduit-ui/mattermost/ci.yml?branch=main&label=CI&logo=github)](https://github.com/conduit-ui/mattermost/actions/workflows/ci.yml)
+[![PHP](https://img.shields.io/badge/PHP-%5E8.4-777BB4?logo=php&logoColor=white)](https://php.net)
+[![Laravel](https://img.shields.io/badge/Laravel-%5E13-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
+[![Saloon](https://img.shields.io/badge/Saloon-%5E4-008080)](https://docs.saloon.dev)
+[![Pest](https://img.shields.io/badge/tested%20with-Pest-8B5CF6?logo=php)](https://pestphp.com)
+[![PHPStan](https://img.shields.io/badge/PHPStan-level%208-brightgreen)](https://phpstan.org)
+[![License](https://img.shields.io/github/license/conduit-ui/mattermost)](LICENSE)
+
 The Laravel way to build Mattermost bots.
 
 > **Status:** Under active development. Not yet published on Packagist.
