@@ -6,6 +6,10 @@ use ConduitUI\Mattermost\Filament\Stats\MattermostStats;
 use ConduitUI\Mattermost\WebSocket\ConnectionState;
 
 describe('MattermostServiceProvider Filament boot', function (): void {
+    beforeEach(function (): void {
+        config()->set('cache.default', 'array');
+    });
+
     it('boots cleanly even when Filament views are loaded', function (): void {
         // Provider is already booted by the test harness; just assert no
         // errors were thrown and the singleton stats binding is wired up.
