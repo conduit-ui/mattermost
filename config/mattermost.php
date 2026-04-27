@@ -120,6 +120,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Interactive Messages
+    |--------------------------------------------------------------------------
+    |
+    | Configure the webhook endpoint that Mattermost POSTs to when a user
+    | clicks a button or selects a menu option on an interactive message.
+    | Set `route` to `null` or `''` to disable automatic route registration.
+    |
+    */
+
+    'interactive' => [
+        'route' => env('MATTERMOST_INTERACTIVE_ROUTE', 'mattermost/interactive'),
+        'middleware' => [],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | WebSocket
     |--------------------------------------------------------------------------
     */

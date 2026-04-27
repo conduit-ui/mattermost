@@ -7,6 +7,8 @@ namespace ConduitUI\Mattermost;
 use ConduitUI\Mattermost\Bot\Router as BotRouter;
 use ConduitUI\Mattermost\Commands\DemoPostCommand;
 use ConduitUI\Mattermost\Filament\Stats\MattermostStats;
+use ConduitUI\Mattermost\Interactive\InteractiveActionController;
+use ConduitUI\Mattermost\Interactive\InteractiveActionRouter;
 use ConduitUI\Mattermost\Notifications\MattermostBroadcaster;
 use ConduitUI\Mattermost\SlashCommands\SlashCommandController;
 use ConduitUI\Mattermost\SlashCommands\SlashCommandRouter;
@@ -30,6 +32,8 @@ class MattermostServiceProvider extends ServiceProvider
 
         $this->app->singleton(SlashCommandRouter::class, fn (Container $container): SlashCommandRouter => new SlashCommandRouter($container));
 
+        $this->app->singleton(InteractiveActionRouter::class, fn (Container $container): InteractiveActionRouter => new InteractiveActionRouter($container));
+
         $this->app->singleton(MattermostStats::class, fn ($app): MattermostStats => new MattermostStats(
             $app->make(CacheRepository::class),
             (string) ($app['config']->get('mattermost.default') ?? 'default'),
@@ -51,6 +55,7 @@ class MattermostServiceProvider extends ServiceProvider
         $this->registerBroadcaster();
         $this->bootBotRouter();
         $this->bootSlashCommandRoute();
+        $this->bootInteractiveRoute();
         $this->bootFilamentPanel();
     }
 
@@ -100,6 +105,22 @@ class MattermostServiceProvider extends ServiceProvider
         Route::post($uri, SlashCommandController::class)
             ->middleware($middleware)
             ->name('mattermost.slash-command');
+    }
+
+    private function bootInteractiveRoute(): void
+    {
+        $uri = config('mattermost.interactive.route', 'mattermost/interactive');
+
+        if (! is_string($uri) || $uri === '') {
+            return;
+        }
+
+        $middleware = config('mattermost.interactive.middleware', []);
+        $middleware = is_array($middleware) ? $middleware : [];
+
+        Route::post($uri, InteractiveActionController::class)
+            ->middleware($middleware)
+            ->name('mattermost.interactive');
     }
 
     /**
