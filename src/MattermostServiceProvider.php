@@ -6,6 +6,9 @@ namespace ConduitUI\Mattermost;
 
 use ConduitUI\Mattermost\Bot\Router as BotRouter;
 use ConduitUI\Mattermost\Commands\DemoPostCommand;
+use ConduitUI\Mattermost\Commands\HealthCommand;
+use ConduitUI\Mattermost\Commands\ListenCommand;
+use ConduitUI\Mattermost\Commands\PostCommand;
 use ConduitUI\Mattermost\Filament\Stats\MattermostStats;
 use ConduitUI\Mattermost\Notifications\MattermostBroadcaster;
 use ConduitUI\Mattermost\SlashCommands\SlashCommandController;
@@ -45,6 +48,9 @@ class MattermostServiceProvider extends ServiceProvider
 
             $this->commands([
                 DemoPostCommand::class,
+                HealthCommand::class,
+                ListenCommand::class,
+                PostCommand::class,
             ]);
         }
 
