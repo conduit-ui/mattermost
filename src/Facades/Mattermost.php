@@ -44,6 +44,8 @@ use Saloon\Http\Faking\MockResponse;
  * @method static \ConduitUI\Mattermost\Testing\MattermostFake assertReacted(?string $postId = null, ?string $emoji = null)
  * @method static \ConduitUI\Mattermost\Testing\MattermostFake assertNotReacted(?string $postId = null, ?string $emoji = null)
  * @method static \ConduitUI\Mattermost\Testing\MattermostFake assertFileUploaded(?\Closure $callback = null, ?int $times = null)
+ * @method static \ConduitUI\Mattermost\Testing\MattermostFake assertProfilePhotoUpdated(?string $userId = null, ?\Closure $callback = null, ?int $times = null)
+ * @method static \ConduitUI\Mattermost\Testing\MattermostFake assertProfilePhotoReset(?string $userId = null, ?\Closure $callback = null, ?int $times = null)
  * @method static \ConduitUI\Mattermost\Testing\MattermostFake preventStrayPosts(bool $prevent = true)
  * @method static array<int, \ConduitUI\Mattermost\Testing\RecordedRequest> recorded(?string $requestClass = null)
  *

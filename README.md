@@ -502,6 +502,47 @@ Pick the connection per call:
 Mattermost::connection('staging')->posts()->createPost([...]);
 ```
 
+### Admin-token operations
+
+A handful of endpoints — most notably `users()->updateProfilePhoto()` — only
+work when the caller holds a token with admin privileges, because Mattermost
+won't let a bot update its own avatar with its own token. Model that as a
+second named connection:
+
+```php
+'connections' => [
+    'default' => [
+        'url'   => env('MATTERMOST_URL'),
+        'token' => env('MATTERMOST_BOT_TOKEN'),
+    ],
+    'admin' => [
+        'url'   => env('MATTERMOST_URL'),
+        'token' => env('MATTERMOST_ADMIN_TOKEN'),
+    ],
+],
+```
+
+Then route the privileged calls through the admin connection while leaving
+day-to-day bot traffic on the default token:
+
+```php
+// Day-to-day — bot token, default connection.
+Mattermost::posts()->createPost([...]);
+
+// Privileged — admin token, explicit connection.
+Mattermost::connection('admin')
+    ->users()
+    ->updateProfilePhoto($botUserId, '/path/to/avatar.png');
+
+Mattermost::connection('admin')
+    ->users()
+    ->deleteProfilePhoto($botUserId);
+```
+
+In tests, `Mattermost::fake()` records the connection name on every request,
+and the bundled `assertProfilePhotoUpdated($userId)` /
+`assertProfilePhotoReset($userId)` assertions cover both endpoints.
+
 ## Local development
 
 A `docker-compose.yml` ships a local Mattermost for development:
